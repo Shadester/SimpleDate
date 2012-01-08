@@ -5,10 +5,14 @@
 static NSBundle *_SimpleDateWeeAppBundle = nil;
 
 float VIEW_HEIGHT = 24.0f;
+float VIEW_WIDTH_PORTRAIT = 316.0f;
+float VIEW_WIDTH_LANDSCAPE = 476.0f;
+
+BOOL isPortrait;
 
 @interface SimpleDateController: NSObject <BBWeeAppController> {
 	UIView *_view;
-    
+    UIView *bg;
     UILabel *timeLabel;
     
 }
@@ -33,13 +37,24 @@ float VIEW_HEIGHT = 24.0f;
 	[super dealloc];
 }
 
+- (void)willRotateToInterfaceOrientation:(int)orientation
+{
+    if(orientation == UIInterfaceOrientationPortrait) {
+        isPortrait = YES;
+    }
+    else {
+        isPortrait = NO;
+    }
+}
+
+
 - (void)getDate {
     
     NSDateFormatter *formatter;
     NSString        *dateString;
     
     formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEEE, MMMM d, yyyy"];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
     
     dateString = [formatter stringFromDate:[NSDate date]];
     
@@ -53,13 +68,12 @@ float VIEW_HEIGHT = 24.0f;
 {
 	if (!_view)
 	{
-        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, 316.0f, VIEW_HEIGHT)];
+        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
         
         UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
-        UIImageView *bg = [[UIImageView alloc] initWithImage:bgImg];
-        bg.frame = CGRectMake(0.0f, 0.0f, 316.0f, VIEW_HEIGHT); //450 = x on teh iPad
+        bg = [[UIImageView alloc] initWithImage:bgImg];
 
-        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, 316.0f, VIEW_HEIGHT)];
+        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];
         timeLabel.textAlignment = UITextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -71,18 +85,33 @@ float VIEW_HEIGHT = 24.0f;
         
         [_view addSubview:bg];
         [_view addSubview:timeLabel];
-        [bg release];
     }
     [self getDate];
     
     return _view;
 }
 
+- (void)viewWillAppear
+{
+    if(isPortrait) {
+        _view.frame = CGRectMake(2.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
+        bg.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
+        timeLabel.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
+    }
+    else {
+        _view.frame = CGRectMake(2.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
+        bg.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
+        timeLabel.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
+    }
+}
+
 - (void)unloadView {
-	[_view release];
-	_view = nil;
 	[timeLabel release];
 	timeLabel = nil;
+    [bg release];
+    bg = nil;
+    [_view release];
+	_view = nil;
 	// Destroy any additional subviews you added here. Don't waste memory :(.
 }
 
