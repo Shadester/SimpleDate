@@ -8,3 +8,5 @@ Changes
 0.0.1 - First version
 
 0.0.2 - Portrait and Landscape working. Localized based on region.
+
+0.0.3 - Using the system font instead of hardcoded font. Added dropshadow.
