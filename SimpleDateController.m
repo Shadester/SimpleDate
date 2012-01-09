@@ -11,7 +11,7 @@ float VIEW_WIDTH_LANDSCAPE = 476.0f;
 BOOL isPortrait;
 
 @interface SimpleDateController: NSObject <BBWeeAppController> {
-	UIView *_view;
+    UIView *_view;
     UIView *bg;
     UILabel *timeLabel;
     
@@ -23,18 +23,18 @@ BOOL isPortrait;
 @synthesize view = _view;
 
 + (void)initialize {
-	_SimpleDateWeeAppBundle = [[NSBundle bundleForClass:[self class]] retain];
+    _SimpleDateWeeAppBundle = [[NSBundle bundleForClass:[self class]] retain];
 }
 
 - (id)init {
-	if((self = [super init]) != nil) {
-		
-	} return self;
+    if((self = [super init]) != nil) {
+        
+    } return self;
 }
 
 - (void)dealloc {
-	[_view release];
-	[super dealloc];
+    [_view release];
+    [super dealloc];
 }
 
 - (void)willRotateToInterfaceOrientation:(int)orientation
@@ -66,21 +66,23 @@ BOOL isPortrait;
 
 - (UIView *)view
 {
-	if (!_view)
-	{
+    if (!_view)
+    {
         _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
         
         UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
         bg = [[UIImageView alloc] initWithImage:bgImg];
-
+        
         timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];
         timeLabel.textAlignment = UITextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
         timeLabel.numberOfLines = 0;
         timeLabel.textColor = [UIColor whiteColor];
+        timeLabel.shadowColor = [UIColor blackColor];
+        timeLabel.shadowOffset = CGSizeMake(1,1);
         timeLabel.minimumFontSize = 16;
-        [timeLabel setFont:[UIFont fontWithName:@"Arial-BoldMT" size:16]];
+        [timeLabel setFont:[UIFont boldSystemFontOfSize:16]];
         timeLabel.adjustsFontSizeToFitWidth = YES;
         
         [_view addSubview:bg];
@@ -106,17 +108,17 @@ BOOL isPortrait;
 }
 
 - (void)unloadView {
-	[timeLabel release];
-	timeLabel = nil;
+    [timeLabel release];
+    timeLabel = nil;
     [bg release];
     bg = nil;
     [_view release];
-	_view = nil;
-	// Destroy any additional subviews you added here. Don't waste memory :(.
+    _view = nil;
+    // Destroy any additional subviews you added here. Don't waste memory :(.
 }
 
 - (float)viewHeight {
-	return VIEW_HEIGHT;
+    return VIEW_HEIGHT;
 }
 
 @end
