@@ -5,8 +5,6 @@
 static NSBundle *_SimpleDateWeeAppBundle = nil;
 
 float VIEW_HEIGHT = 24.0f;
-float VIEW_WIDTH_PORTRAIT = 316.0f;
-float VIEW_WIDTH_LANDSCAPE = 476.0f;
 
 BOOL isPortrait;
 
@@ -26,6 +24,10 @@ BOOL isPortrait;
     _SimpleDateWeeAppBundle = [[NSBundle bundleForClass:[self class]] retain];
 }
 
+- (CGFloat) window_width   {
+    return [UIScreen mainScreen].applicationFrame.size.width;
+}
+
 - (id)init {
     if((self = [super init]) != nil) {
         
@@ -36,17 +38,6 @@ BOOL isPortrait;
     [_view release];
     [super dealloc];
 }
-
-- (void)willRotateToInterfaceOrientation:(int)orientation
-{
-    if(orientation == UIInterfaceOrientationPortrait) {
-        isPortrait = YES;
-    }
-    else {
-        isPortrait = NO;
-    }
-}
-
 
 - (void)getDate {
     
@@ -68,12 +59,13 @@ BOOL isPortrait;
 {
     if (!_view)
     {
-        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
+		CGFloat windowWidth = [self window_width];
+        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, windowWidth, VIEW_HEIGHT)];
         
         UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
         bg = [[UIImageView alloc] initWithImage:bgImg];
         
-        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT)];
+        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, windowWidth, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];
         timeLabel.textAlignment = UITextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -95,16 +87,10 @@ BOOL isPortrait;
 
 - (void)viewWillAppear
 {
-    if(isPortrait) {
-        _view.frame = CGRectMake(2.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
-        bg.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
-        timeLabel.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_PORTRAIT, VIEW_HEIGHT);
-    }
-    else {
-        _view.frame = CGRectMake(2.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
-        bg.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
-        timeLabel.frame = CGRectMake(0.0f, 0.0f, VIEW_WIDTH_LANDSCAPE, VIEW_HEIGHT);
-    }
+	CGFloat windowWidth = [self window_width];
+	_view.frame = CGRectMake(2.0f, 0.0f, windowWidth, VIEW_HEIGHT);
+    bg.frame = CGRectMake(0.0f, 0.0f, windowWidth, VIEW_HEIGHT);
+    timeLabel.frame = CGRectMake(0.0f, 0.0f, windowWidth, VIEW_HEIGHT);
 }
 
 - (void)unloadView {

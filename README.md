@@ -10,3 +10,7 @@ Changes
 0.0.2 - Portrait and Landscape working. Localized based on region.
 
 0.0.3 - Using the system font instead of hardcoded font. Added dropshadow.
+
+0.0.4 - Trying to fix the rotation bug
+
+0.0.5 - Better way of centering

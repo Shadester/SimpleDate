@@ -1,5 +1,6 @@
 include theos/makefiles/common.mk
 
+ARCHS = armv7
 BUNDLE_NAME = SimpleDate
 SimpleDate_FILES = SimpleDateController.m
 SimpleDate_INSTALL_PATH = /System/Library/WeeAppPlugins/
