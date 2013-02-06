@@ -2,6 +2,10 @@
 #import <UIKit/UIKit.h>
 #import "BBWeeAppController-Protocol.h"
 
+@interface UIApplication(xxx)
+-(int)activeInterfaceOrientation;
+@end
+
 static NSBundle *_SimpleDateWeeAppBundle = nil;
 
 float VIEW_HEIGHT = 24.0f;
@@ -22,10 +26,6 @@ BOOL isPortrait;
 
 + (void)initialize {
     _SimpleDateWeeAppBundle = [[NSBundle bundleForClass:[self class]] retain];
-}
-
-- (CGFloat) window_width   {
-    return [UIScreen mainScreen].applicationFrame.size.width;
 }
 
 - (id)init {
@@ -59,13 +59,17 @@ BOOL isPortrait;
 {
     if (!_view)
     {
-		CGFloat windowWidth = [self window_width];
-        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, windowWidth, VIEW_HEIGHT)];
+        int orientation = [[UIApplication sharedApplication] activeInterfaceOrientation];
+        CGSize size = [UIScreen mainScreen].bounds.size;
+        CGFloat screenWidth = size.width;
+        if (orientation == 3 || orientation == 4) screenWidth = size.height;
+
+        _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, screenWidth-4, VIEW_HEIGHT)];
         
         UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
         bg = [[UIImageView alloc] initWithImage:bgImg];
         
-        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0f, 0.0f, windowWidth, VIEW_HEIGHT)];
+        timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, screenWidth, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];
         timeLabel.textAlignment = UITextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -73,13 +77,13 @@ BOOL isPortrait;
         timeLabel.textColor = [UIColor whiteColor];
         timeLabel.shadowColor = [UIColor blackColor];
         timeLabel.shadowOffset = CGSizeMake(1,1);
-        timeLabel.minimumFontSize = 16;
         [timeLabel setFont:[UIFont boldSystemFontOfSize:16]];
         timeLabel.adjustsFontSizeToFitWidth = YES;
         
         [_view addSubview:bg];
         [_view addSubview:timeLabel];
     }
+    
     [self getDate];
     
     return _view;
@@ -87,10 +91,19 @@ BOOL isPortrait;
 
 - (void)viewWillAppear
 {
-	CGFloat windowWidth = [self window_width];
-	_view.frame = CGRectMake(2.0f, 0.0f, windowWidth, VIEW_HEIGHT);
-    bg.frame = CGRectMake(0.0f, 0.0f, windowWidth, VIEW_HEIGHT);
-    timeLabel.frame = CGRectMake(0.0f, 0.0f, windowWidth, VIEW_HEIGHT);
+    int orientation = [[UIApplication sharedApplication] activeInterfaceOrientation];
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    CGFloat screenWidth = size.width;
+    if (orientation == 3 || orientation == 4) screenWidth = size.height;
+
+	_view.frame = CGRectMake(2.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);
+    bg.frame = CGRectMake(0.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);
+    timeLabel.frame = CGRectMake(0.0f, 0.0f, screenWidth, VIEW_HEIGHT);
+}
+
+- (void)willRotateToInterfaceOrientation:(int)orientation
+{
+    [self viewWillAppear];
 }
 
 - (void)unloadView {

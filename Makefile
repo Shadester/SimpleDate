@@ -1,6 +1,8 @@
+export ARCHS=armv7 
+export TARGET=iphone:latest:4.3
+
 include theos/makefiles/common.mk
 
-ARCHS = armv7
 BUNDLE_NAME = SimpleDate
 SimpleDate_FILES = SimpleDateController.m
 SimpleDate_INSTALL_PATH = /System/Library/WeeAppPlugins/
