@@ -74,7 +74,7 @@ BOOL isPortrait;
         timeLabel.backgroundColor = [UIColor clearColor];
         timeLabel.textAlignment = UITextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
-        timeLabel.numberOfLines = 0;
+        timeLabel.numberOfLines = 1;
         timeLabel.textColor = [UIColor whiteColor];
         timeLabel.shadowColor = [UIColor blackColor];
         timeLabel.shadowOffset = CGSizeMake(1,1);
