@@ -68,6 +68,7 @@ BOOL isPortrait;
         
         UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
         bg = [[UIImageView alloc] initWithImage:bgImg];
+        bg.frame = CGRectMake(0.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);
         
         timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, screenWidth, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];

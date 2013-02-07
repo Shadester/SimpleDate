@@ -14,3 +14,5 @@ Changes
 0.0.4 - Trying to fix the rotation bug
 
 0.0.5 - Better way of centering
+
+0.0.6 - Correct size of background
