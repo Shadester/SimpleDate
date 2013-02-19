@@ -6,6 +6,10 @@
 -(int)activeInterfaceOrientation;
 @end
 
+@interface UIDevice (theiostream)
+- (BOOL)isWildcat;
+@end
+
 static NSBundle *_SimpleDateWeeAppBundle = nil;
 
 float VIEW_HEIGHT = 24.0f;
@@ -64,17 +68,19 @@ BOOL isPortrait;
         CGFloat screenWidth = size.width;
         if (orientation == 3 || orientation == 4) screenWidth = size.height;
 
+        if ([[UIDevice currentDevice] isWildcat]) screenWidth = 480.0f;
+
         _view = [[UIView alloc] initWithFrame:CGRectMake(2.0f, 0.0f, screenWidth-4, VIEW_HEIGHT)];
         
-        UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/StocksWeeApp.bundle/WeeAppBackground.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
+        UIImage *bgImg = [[UIImage imageWithContentsOfFile:@"/System/Library/WeeAppPlugins/SocialWeeApp.bundle/Background.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4.0f, 4.0f, 4.0f, 4.0f)];
         bg = [[UIImageView alloc] initWithImage:bgImg];
         bg.frame = CGRectMake(0.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);
         
         timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, screenWidth, VIEW_HEIGHT)];
         timeLabel.backgroundColor = [UIColor clearColor];
-        timeLabel.textAlignment = UITextAlignmentCenter;
+        timeLabel.textAlignment = NSTextAlignmentCenter;
         timeLabel.lineBreakMode = UILineBreakModeWordWrap;
-        timeLabel.numberOfLines = 1;
+        timeLabel.numberOfLines = 0;
         timeLabel.textColor = [UIColor whiteColor];
         timeLabel.shadowColor = [UIColor blackColor];
         timeLabel.shadowOffset = CGSizeMake(1,1);
@@ -96,6 +102,8 @@ BOOL isPortrait;
     CGSize size = [UIScreen mainScreen].bounds.size;
     CGFloat screenWidth = size.width;
     if (orientation == 3 || orientation == 4) screenWidth = size.height;
+
+    if ([[UIDevice currentDevice] isWildcat]) screenWidth = 480.0f;
 
 	_view.frame = CGRectMake(2.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);
     bg.frame = CGRectMake(0.0f, 0.0f, screenWidth-4, VIEW_HEIGHT);

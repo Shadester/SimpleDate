@@ -16,3 +16,5 @@ Changes
 0.0.5 - Better way of centering
 
 0.0.6 - Correct size of background
+
+0.0.7 - Now works on iPad too.
